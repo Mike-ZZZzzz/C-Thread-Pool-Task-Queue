@@ -17,8 +17,8 @@ ThreadPool::~ThreadPool() {
   {
     std::lock_guard<std::mutex> lk(mu_);
     stop_ = true;
+    cv_.notify_all();
   }
-  cv_.notify_all();
 
   for (auto& th : workers_) {
     if (th.joinable()) th.join();
